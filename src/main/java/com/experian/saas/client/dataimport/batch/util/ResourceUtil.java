@@ -34,9 +34,10 @@ public class ResourceUtil {
     public static void addOrUpdateFileToCurrAVScanMap(final String fileAbsolutePath, final boolean status) {
         if (!StringUtils.isEmpty(fileAbsolutePath) && CURR_AV_SCAN_FILES_MAP.size() <= MAP_MAX_SIZE) {
             if (CURR_AV_SCAN_FILES_MAP.containsKey(fileAbsolutePath)) {
-                LOGGER.info("File '{}' is already in AV scanned map", fileAbsolutePath);
+                LOGGER.info("File '{}' is already in AV scanned map .. updating with status {}", fileAbsolutePath, status);
+                CURR_AV_SCAN_FILES_MAP.put(fileAbsolutePath, status);
             } else {
-                CURR_AV_SCAN_FILES_MAP.put(fileAbsolutePath, false);
+                CURR_AV_SCAN_FILES_MAP.put(fileAbsolutePath, status);
             }
         }
     }

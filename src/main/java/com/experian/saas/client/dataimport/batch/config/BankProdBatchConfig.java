@@ -11,6 +11,7 @@ import com.experian.saas.client.dataimport.batch.processor.AccountItemProcessor;
 import com.experian.saas.client.dataimport.batch.processor.CustomerItemProcessor;
 import com.experian.saas.client.dataimport.batch.scheduler.BatchScheduler;
 import com.experian.saas.client.dataimport.batch.tasklet.FileAntiVirusScanTasklet;
+import com.experian.saas.client.dataimport.batch.tasklet.FileRenameMovingTasklet;
 import com.experian.saas.client.dataimport.batch.tasklet.ZipArchivedFilesTasklet;
 import com.experian.saas.client.dataimport.batch.util.ResourceUtil;
 import com.experian.saas.client.dataimport.batch.validator.JobParameterValidator;
@@ -66,18 +67,12 @@ public class BankProdBatchConfig {
     private DataSource postgresDataSource;
 
     @Autowired
-    private FileAntiVirusScanTasklet fileAntiVirusScanTasklet;
-
-    @Autowired
     private ZipArchivedFilesTasklet zipArchivedFilesTasklet;
 
     @Scheduled(fixedRate = 5000)
     public void perform() throws Exception {
         JobParameters parameters = new JobParametersBuilder()
                 .addString("JobID", String.valueOf(System.currentTimeMillis())).toJobParameters();
-
-        JobExecution antivirusJob = simpleJobLauncher.run(scanFilesWithAntivirusJob(), parameters);
-        LOGGER.info("Antivirus Job finished with status : {}", antivirusJob.getStatus());
 
         JobExecution fileProcessJob = simpleJobLauncher.run(readImportFilesJob(), parameters);
         LOGGER.info("File process Job finished with status : {}", fileProcessJob.getStatus());
@@ -190,15 +185,6 @@ public class BankProdBatchConfig {
     }
     // End - Customer Reader/Writer/Processor
 
-    // Files AntiVirus scan
-    @Bean
-    public Step antiVirusScanStep() {
-        return stepBuilderFactory.get("antiVirusScanStep")
-                .tasklet(fileAntiVirusScanTasklet)
-                .build();
-    }
-    // End - Files AntiVirus scan
-
     // ZIP archived files
     @Bean
     public Step zipArchivedFilesStep() {
@@ -234,15 +220,6 @@ public class BankProdBatchConfig {
                 .flow(processCustomerStep())
                     .next(processAccountStep())
                 .end().build();
-    }
-
-    @Bean
-    public Job scanFilesWithAntivirusJob() {
-        return jobBuilderFactory.get("scanFilesWithAntivirusJob")
-                .incrementer(new RunIdIncrementer())
-                .flow(antiVirusScanStep())
-                .end()
-                .build();
     }
 
     @Bean

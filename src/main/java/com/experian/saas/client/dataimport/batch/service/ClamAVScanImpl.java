@@ -44,7 +44,7 @@ public class ClamAVScanImpl implements AntivirusScan {
         if (scanStatus != 0) {
             LOGGER.debug("Scanned failed for file {} with status {}", file.getAbsolutePath(), scanStatus);
         }
-        ResourceUtil.addFileToCurrAVScanMap(file.getAbsolutePath(), false);
+
         return scanStatus;
     }
 

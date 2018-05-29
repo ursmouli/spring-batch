@@ -3,6 +3,7 @@ package com.experian.saas.client.dataimport.batch.tasklet;
 
 import com.experian.saas.client.dataimport.batch.components.ConfigParameters;
 import com.experian.saas.client.dataimport.batch.service.AntivirusScan;
+import com.experian.saas.client.dataimport.batch.util.AppStatusEnum;
 import com.experian.saas.client.dataimport.batch.util.CommonUtil;
 import com.experian.saas.client.dataimport.batch.util.ResourceUtil;
 import org.slf4j.Logger;
@@ -30,13 +31,14 @@ public class FileAntiVirusScanTasklet implements Tasklet {
     private ConfigParameters configParameters;
 
     @Autowired
-    @Qualifier("clamAVScan")
+    //@Qualifier("clamAVScan")
+    @Qualifier("antivirusScan")
     private AntivirusScan antivirusScan;
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
 
-        File prodDir = new File(configParameters.getStsLandingDirPath());
+        File prodDir = new File(configParameters.getAvScanProcessDirPath());
 
         File processDir = new File(configParameters.getFileProcessDirPath());
         File virusAffectedDir = new File(configParameters.getVirusAffectedDirPath());
@@ -46,7 +48,37 @@ public class FileAntiVirusScanTasklet implements Tasklet {
             List<File> filesList = Arrays.asList(prodDir.listFiles());
 
             filesList.forEach(file -> {
-                if (ResourceUtil.isFileInAVScanMap(file.getAbsolutePath())) {
+                if (!ResourceUtil.isFileInAVScanProcessing(file.getAbsolutePath())) {
+                    int virusStatus = 0;
+
+                    try {
+                        virusStatus = antivirusScan.scanFileWithAntivirus(file);
+                    } catch (InterruptedException e) {
+                        LOGGER.error("antivirus scan interrupted {}", e);
+                        virusStatus = AntivirusScan.FAILED_EXIT_CODE;
+                    } catch (IOException e) {
+                        LOGGER.error("antivirus scan IO exception {}", e);
+                        virusStatus = AntivirusScan.FAILED_EXIT_CODE;
+                    }
+
+                    if (virusStatus == 0) {
+                        CommonUtil.moveFileToDestDir(file, processDir);
+                        LOGGER.info("Moved file '{}' to process folder '{}'",
+                                file.getAbsolutePath(),
+                                processDir.getAbsolutePath());
+                    } else {
+                        CommonUtil.moveFileToDestDir(file, virusAffectedDir);
+                        LOGGER.warn("Moved file '{}' to virus affected dir '{}'",
+                                file.getAbsolutePath(),
+                                virusAffectedDir.getAbsolutePath());
+                    }
+                }
+            });
+
+            /*ResourceUtil.getCurrentAVScanMap().keySet().parallelStream().forEach(key -> {
+                File file = new File(key);
+
+                if (file.exists() && !ResourceUtil.isFileInAVScanProcessing(file.getAbsolutePath())) {
                     int virusStatus = 0;
 
                     try {
@@ -71,19 +103,9 @@ public class FileAntiVirusScanTasklet implements Tasklet {
                                 virusAffectedDir.getAbsolutePath());
                     }
                 }
-            });
+            });*/
         }
 
         return null;
-    }
-
-    private void moveFileToDestDir(File file, File destDir) {
-        try {
-            CommonUtil.moveFileToDir(file, destDir);
-        } catch (IOException e) {
-            LOGGER.error("Failed to move success virus scanned file '{}' to destDir '{}'",
-                    file.getAbsolutePath(),
-                    destDir.getAbsolutePath());
-        }
     }
 }

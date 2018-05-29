@@ -24,6 +24,9 @@ public class ConfigParameters {
     @Value("${csv.zip.archive.path}")
     private String zipArchivePath;
 
+    @Value("${csv.avscan.process.dir}")
+    private String avScanProcessDirPath;
+
     public String getStsLandingDirPath() {
         return stsLandingDirPath;
     }
@@ -46,5 +49,9 @@ public class ConfigParameters {
 
     public String getZipArchivePath() {
         return zipArchivePath;
+    }
+
+    public String getAvScanProcessDirPath() {
+        return avScanProcessDirPath;
     }
 }
