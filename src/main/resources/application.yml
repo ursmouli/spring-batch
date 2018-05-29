@@ -1,0 +1,6 @@
+experian:
+  saas:
+    av:
+      service:
+        predefinedArguments: ["c:/ClamAV/clamscan.exe", "--infected", "--suppress-ok-results"]
+        timeToWait: 3
