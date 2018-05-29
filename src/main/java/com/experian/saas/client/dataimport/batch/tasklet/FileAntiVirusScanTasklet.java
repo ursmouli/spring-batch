@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class FileAntiVirusScanTasklet implements Tasklet {
@@ -47,11 +48,14 @@ public class FileAntiVirusScanTasklet implements Tasklet {
 
             List<File> filesList = Arrays.asList(prodDir.listFiles());
 
-            filesList.forEach(file -> {
+            filesList.parallelStream().forEach(file -> {
                 if (!ResourceUtil.isFileInAVScanProcessing(file.getAbsolutePath())) {
                     int virusStatus = 0;
 
                     try {
+                        LOGGER.info("Sleeping now {}", file.getName());
+                        Thread.sleep(TimeUnit.MINUTES.toMillis(2));
+                        LOGGER.info("Waking after sleep {}", file.getName());
                         virusStatus = antivirusScan.scanFileWithAntivirus(file);
                     } catch (InterruptedException e) {
                         LOGGER.error("antivirus scan interrupted {}", e);

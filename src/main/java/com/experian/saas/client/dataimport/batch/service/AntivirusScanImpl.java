@@ -29,33 +29,12 @@ public class AntivirusScanImpl implements AntivirusScan {
     public int scanFileWithAntivirus(File file) {
         ResourceUtil.addOrUpdateFileToCurrAVScanMap(file.getAbsolutePath(), AppStatusEnum.FILE_IN_AV_SCAN_PROCESSING.getStatus());
         try {
-            //runCmd();
-            LOGGER.info("Waking after wait .. '{}'", file.getName());
+
         } catch (Exception e) {
             LOGGER.error("Interrupt exception:", e);
         } finally {
             ResourceUtil.deleteFileInAVScanMap(file.getAbsolutePath());
         }
         return 0;
-    }
-
-    private static void runCmd() throws Exception {
-        File script = new File("C:\\powercurve\\clientdataimport\\scan.bat");
-        ProcessBuilder processBuilder = new ProcessBuilder(script.getAbsolutePath(), "");
-        processBuilder.directory(new File("C:\\powercurve\\clientdataimport"));
-
-        File log = new File("C:/workspace/log.txt");
-        processBuilder.redirectErrorStream(true);
-        processBuilder.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
-        Process process = processBuilder.start();
-
-        process.waitFor();
-        if (process.waitFor(3, TimeUnit.MINUTES)) {
-
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        runCmd();
     }
 }
