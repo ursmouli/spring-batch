@@ -24,6 +24,29 @@ public class Customer extends BaseResourceAware {
     public Customer() {
     }
 
+    public String getCsvDelimitedString() {
+        String delimiter = ",";
+        return id + delimiter
+                + recordType + delimiter
+                + customerNumber + delimiter
+                + customerName + delimiter
+                + firstName + delimiter
+                + middleName + delimiter
+                + lastName + delimiter
+                + nameSuffix + delimiter
+                + officerDirectorShareholder + delimiter
+                + addressLine1 + delimiter
+                + addressLine2 + delimiter
+                + city + delimiter
+                + state + delimiter
+                + zipCode + delimiter
+                + primaryPhone + delimiter
+                + socialNumber + delimiter
+                + birthDate + delimiter
+                + preApprovalCode + delimiter
+                + negativeList;
+    }
+
     public String getId() {
         return id;
     }

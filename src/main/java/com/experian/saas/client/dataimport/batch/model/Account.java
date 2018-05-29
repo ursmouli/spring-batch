@@ -13,6 +13,17 @@ public class Account extends BaseResourceAware {
     public Account() {
     }
 
+    public String getCsvDelimitedString() {
+        String delimiter = ",";
+        return id + delimiter
+                + customerId + delimiter
+                + accountNumber + delimiter
+                + accountType + delimiter
+                + openDate + delimiter
+                + currentBalance + delimiter
+                + accountStatus;
+    }
+
     @Override
     public String toString() {
         String s = "id: " + id

@@ -1,0 +1,45 @@
+https://www.developer.com/design/article.php/10925_3711331_3/Implementing-an-Anti-Virus-File-Scan-in-JEE-Applications.htm
+
+http://jeroenbellen.com/manage-and-reload-spring-application-properties-on-the-fly/
+
+-- Spring Batch --
+------------------
+https://docs.spring.io/spring-batch/4.0.x/reference/html/
+
+https://docs.spring.io/spring-batch/4.0.x/reference/html/domain.html#domainLanguageOfBatch
+https://docs.spring.io/spring-batch/4.0.x/reference/html/job.html#configureJob
+
+Spring Batch Examples:
+
+http://walkingtechie.blogspot.my/2017/03/spring-batch-listeners-example.html
+https://dzone.com/articles/chunk-oriented-processing
+https://github.com/langmi/spring-batch-examples-playground
+
+http://forum.spring.io/forum/spring-projects/batch/111884-accessing-the-currently-processing-filename
+https://stackoverflow.com/questions/25540502/use-of-multiple-datasources-in-spring-batch
+https://stackoverflow.com/questions/45718888/spring-batch-running-multiple-jobs-in-parallel
+
+https://github.com/pkainulainen/spring-batch-examples
+http://www.kswaughs.com/2016/03/spring-boot-batch-job-scheduler-example.html
+https://github.com/walkingtechie/spring-batch-multi-resource-item-reader
+https://github.com/szantopeter/spring-batch-example (refer)
+http://walkingtechie.blogspot.my/2017/03/spring-batch-multiresourceitemreader-example.html
+https://spring.io/guides/gs/batch-processing/
+https://www.mkyong.com/spring-batch/spring-batch-multiresourceitemreader-example/
+
+http://websystique.com/springbatch/spring-batch-multiresourceitemreader-hibernateitemwriter-example/
+https://www.mkyong.com/spring-batch/spring-batch-multiresourceitemreader-example/
+https://github.com/cloudhuang/spring-batch-multiple-datasource
+https://www.mkyong.com/spring-batch/spring-batch-and-spring-taskscheduler-example/
+https://howtodoinjava.com/spring/spring-orm/spring-3-2-5-abstractroutingdatasource-example/
+
+http://forum.spring.io/forum/spring-projects/batch/111884-accessing-the-currently-processing-filename
+
+http://forum.spring.io/forum/spring-projects/batch/111088-any-way-to-skip-the-first-and-last-line-of-the-input-file-when-reading-a-txt-file
+
+http://javasampleapproach.com/spring-framework/spring-boot/how-to-use-jdbc-template-with-spring-boot-for-postgres-database
+
+Zip Files
+---------
+https://howtodoinjava.com/core-java/io/how-to-create-password-protected-zip-files-in-java/
+http://www.lingala.net/zip4j/index.php

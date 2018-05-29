@@ -78,36 +78,6 @@ public class FileAntiVirusScanTasklet implements Tasklet {
                     }
                 }
             });
-
-            /*ResourceUtil.getCurrentAVScanMap().keySet().parallelStream().forEach(key -> {
-                File file = new File(key);
-
-                if (file.exists() && !ResourceUtil.isFileInAVScanProcessing(file.getAbsolutePath())) {
-                    int virusStatus = 0;
-
-                    try {
-                        virusStatus = antivirusScan.scanFileWithAntivirus(file);
-                    } catch (InterruptedException e) {
-                        LOGGER.error("antivirus scan interrupted {}", e);
-                        virusStatus = AntivirusScan.FAILED_EXIT_CODE;
-                    } catch (IOException e) {
-                        LOGGER.error("antivirus scan IO exception {}", e);
-                        virusStatus = AntivirusScan.FAILED_EXIT_CODE;
-                    }
-
-                    if (virusStatus == 0) {
-                        moveFileToDestDir(file, processDir);
-                        LOGGER.info("Moved file '{}' to process folder '{}'",
-                                file.getAbsolutePath(),
-                                processDir.getAbsolutePath());
-                    } else {
-                        moveFileToDestDir(file, virusAffectedDir);
-                        LOGGER.warn("Moved file '{}' to virus affected dir '{}'",
-                                file.getAbsolutePath(),
-                                virusAffectedDir.getAbsolutePath());
-                    }
-                }
-            });*/
         }
 
         return null;

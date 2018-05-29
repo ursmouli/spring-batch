@@ -5,13 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.awt.*;
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class CommonUtil {
 
@@ -19,6 +21,8 @@ public class CommonUtil {
 
     private static String ARCHIVE_FOLDER_DATE_FORMAT = "ddMMyyyy";
     private static String IMPORT_FILE_DATE_FORMAT = "MM/dd/yyyy";
+
+    private static List<String> ids = new ArrayList<>();
 
     private CommonUtil() {}
 
@@ -74,5 +78,31 @@ public class CommonUtil {
     public static void main(String[] args) {
         System.out.println(renameFileToDateTimestamp("C:/path/filename.csv"));
         System.out.println(AppStatusEnum.ADD_FILE_TO_AV_SCAN_MAP.getStatus());
+    }
+
+    public static String getUniqueId() {
+        String id = generateRandomString();
+
+        while (ids.contains(id)) {
+            id = getUniqueId();
+        }
+
+        ids.add(id);
+        return id;
+    }
+
+    private static String generateRandomString() {
+        char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        StringBuilder sb = new StringBuilder(20);
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    public static List<String> getIds() {
+        return ids;
     }
 }
