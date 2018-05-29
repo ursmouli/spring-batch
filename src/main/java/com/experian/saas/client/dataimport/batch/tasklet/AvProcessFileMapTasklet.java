@@ -25,7 +25,7 @@ public class AvProcessFileMapTasklet implements Tasklet {
     private ConfigParameters configParameters;
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    public synchronized RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
         File avScanProcessDir = new File(configParameters.getAvScanProcessDirPath());
 

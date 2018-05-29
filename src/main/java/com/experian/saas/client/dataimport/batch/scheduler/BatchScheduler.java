@@ -6,6 +6,7 @@ import org.springframework.batch.core.repository.support.MapJobRepositoryFactory
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
@@ -39,6 +40,7 @@ public class BatchScheduler {
     public SimpleJobLauncher jobLauncher(JobRepository jobRepository) {
         SimpleJobLauncher launcher = new SimpleJobLauncher();
         launcher.setJobRepository(jobRepository);
+        launcher.setTaskExecutor(new SimpleAsyncTaskExecutor());
         return launcher;
     }
 

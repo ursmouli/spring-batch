@@ -10,7 +10,7 @@ public class CustomerItemProcessor implements ItemProcessor<Customer, Customer> 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerItemProcessor.class);
 
     @Override
-    public Customer process(Customer customer) throws Exception {
+    public synchronized Customer process(Customer customer) throws Exception {
         if (isValid(customer)) {
             LOGGER.debug("processing customer : {}", customer);
             return customer;

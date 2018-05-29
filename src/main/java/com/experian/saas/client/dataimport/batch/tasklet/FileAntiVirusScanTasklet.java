@@ -37,7 +37,7 @@ public class FileAntiVirusScanTasklet implements Tasklet {
     private AntivirusScan antivirusScan;
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+    public synchronized RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
 
         File prodDir = new File(configParameters.getAvScanProcessDirPath());
 
@@ -53,9 +53,7 @@ public class FileAntiVirusScanTasklet implements Tasklet {
                     int virusStatus = 0;
 
                     try {
-                        LOGGER.info("Sleeping now {}", file.getName());
-                        Thread.sleep(TimeUnit.MINUTES.toMillis(2));
-                        LOGGER.info("Waking after sleep {}", file.getName());
+                        //Thread.sleep(TimeUnit.MINUTES.toMillis(1));
                         virusStatus = antivirusScan.scanFileWithAntivirus(file);
                     } catch (InterruptedException e) {
                         LOGGER.error("antivirus scan interrupted {}", e);

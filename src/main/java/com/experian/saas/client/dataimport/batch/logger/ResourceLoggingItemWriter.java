@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import java.io.File;
 import java.util.List;
 
-public class ResourceLoggingItemWriter<T extends BaseResourceAware> implements ItemWriter<T>, ItemStream, InitializingBean {
+public final class ResourceLoggingItemWriter<T extends BaseResourceAware> implements ItemWriter<T>, ItemStream, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceLoggingItemWriter.class);
 
@@ -31,7 +31,7 @@ public class ResourceLoggingItemWriter<T extends BaseResourceAware> implements I
     }
 
     @Override
-    public void write(List<? extends T> items) throws Exception {
+    public synchronized void write(List<? extends T> items) throws Exception {
         delegate.write(items);
 
         for (T item : items) {
@@ -61,7 +61,7 @@ public class ResourceLoggingItemWriter<T extends BaseResourceAware> implements I
     }
 
     @Override
-    public void close() throws ItemStreamException {
+    public synchronized void close() throws ItemStreamException {
         if (delegate instanceof ItemStream) {
             ((ItemStream)delegate).close();
         }
@@ -72,13 +72,15 @@ public class ResourceLoggingItemWriter<T extends BaseResourceAware> implements I
         }
     }
 
-    private void finishedProcessingInput(Resource resource) {
+    private synchronized void finishedProcessingInput(Resource resource) {
         LOGGER.info("Finished writing all items from {}", resource);
         LOGGER.info("Archive current resource and setting current resource to null after archiving");
         try {
             String destPath = archivePath + File.separator + CommonUtil.convertCurrentDateToString();
             File destDir = new File(destPath);
-            FileUtils.moveFileToDirectory(resource.getFile(), destDir, true);
+            //if (resource.getFile().exists()) {
+                FileUtils.moveFileToDirectory(resource.getFile(), destDir, true);
+            //}
         } catch (Exception e) {
             LOGGER.error("failed to move/create dir : '{}' for file '{}'", archivePath, resource.getFilename(), e);
         } finally {

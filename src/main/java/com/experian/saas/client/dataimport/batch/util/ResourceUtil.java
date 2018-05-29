@@ -42,10 +42,11 @@ public class ResourceUtil {
         }
     }
 
-    public static boolean isFileInAVScanProcessing(final String fileAbsolutePath) {
+    public static synchronized boolean isFileInAVScanProcessing(final String fileAbsolutePath) {
         boolean result = false;
         if (CURR_AV_SCAN_FILES_MAP.containsKey(fileAbsolutePath)) {
             result = CURR_AV_SCAN_FILES_MAP.get(fileAbsolutePath);
+            LOGGER.warn("File '{}' is already in AV scan processing {}", fileAbsolutePath, result);
         } else {
             LOGGER.warn("File '{}' not in AV scan map", fileAbsolutePath);
         }

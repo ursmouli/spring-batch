@@ -19,7 +19,7 @@ public class AccountItemProcessor implements ItemProcessor<Account, Account> {
     private JdbcTemplate postgresJdbcTemplate;
 
     @Override
-    public Account process(Account account) throws Exception {
+    public synchronized Account process(Account account) throws Exception {
         if (isValid(account)) {
             LOGGER.debug("processing account : {}", account);
             return account;
