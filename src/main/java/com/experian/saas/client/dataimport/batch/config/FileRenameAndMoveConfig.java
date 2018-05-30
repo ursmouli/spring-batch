@@ -47,13 +47,13 @@ public class FileRenameAndMoveConfig {
             renameAndMoveFileJob = simpleJobLauncher.run(renameAndMoveFileJob(), parameters);
             LOGGER.info("RenameAndMoveFile Job finished with status : {}", renameAndMoveFileJob.getStatus());
         } catch (JobExecutionAlreadyRunningException e) {
-            e.printStackTrace();
+            LOGGER.error("Job already running", e);
         } catch (JobRestartException e) {
-            e.printStackTrace();
+            LOGGER.error("Job restart failed", e);
         } catch (JobInstanceAlreadyCompleteException e) {
-            e.printStackTrace();
+            LOGGER.error("Job already completed", e);
         } catch (JobParametersInvalidException e) {
-            e.printStackTrace();
+            LOGGER.error("Job parameters are not valid", e);
         }
     }
 

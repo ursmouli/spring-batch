@@ -48,7 +48,7 @@ public class CommonUtil {
         return result;
     }
 
-    public static String getCurrentDateTimestamp() {
+    private static String getCurrentDateTimestamp() {
         return new SimpleDateFormat("ddMMyyyyHHmmss").format(new Date());
     }
 
@@ -67,17 +67,11 @@ public class CommonUtil {
         if (!StringUtils.isEmpty(currFileName)) {
             int extIndex = currFileName.indexOf(ext);
             String tmpNameWithoutExt = currFileName.substring(0, extIndex);
-            System.out.println(tmpNameWithoutExt);
             tmpNameWithoutExt = tmpNameWithoutExt + getCurrentDateTimestamp() + ext;
             return tmpNameWithoutExt;
         } else {
             return currFileName;
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(renameFileToDateTimestamp("C:/path/filename.csv"));
-        System.out.println(AppStatusEnum.ADD_FILE_TO_AV_SCAN_MAP.getStatus());
     }
 
     public static String getUniqueId() {

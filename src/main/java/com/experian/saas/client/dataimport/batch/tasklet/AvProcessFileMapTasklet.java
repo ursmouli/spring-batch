@@ -30,13 +30,17 @@ public class AvProcessFileMapTasklet implements Tasklet {
         File avScanProcessDir = new File(configParameters.getAvScanProcessDirPath());
 
         if (avScanProcessDir.isDirectory()) {
-            List<File> fileList = Arrays.asList(avScanProcessDir.listFiles());
+            File[] filesToMap = avScanProcessDir.listFiles();
+            if (filesToMap != null) {
+                List<File> fileList = Arrays.asList(filesToMap);
 
-            fileList.forEach(file -> {
-                if (!ResourceUtil.isFileInAVScanMap(file.getAbsolutePath())) {
-                    ResourceUtil.addOrUpdateFileToCurrAVScanMap(file.getAbsolutePath(), AppStatusEnum.ADD_FILE_TO_AV_SCAN_MAP.getStatus());
-                }
-            });
+                fileList.forEach(file -> {
+                    if (!ResourceUtil.isFileInAVScanMap(file.getAbsolutePath())) {
+                        ResourceUtil.addOrUpdateFileToCurrAVScanMap(file.getAbsolutePath(),
+                                AppStatusEnum.ADD_FILE_TO_AV_SCAN_MAP.getStatus());
+                    }
+                });
+            }
         }
 
         return null;
